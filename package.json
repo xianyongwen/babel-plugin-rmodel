@@ -1,0 +1,20 @@
+{
+  "name": "babel-plugin-rmodel",
+  "version": "0.1.0",
+  "description": "a babel plugin of achieving bidirectional bindings of react state",
+  "main": "src/index.js",
+  "scripts": {
+    
+  },
+  "keywords": [
+    "react",
+    "rmodel"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:xianyongwen/babel-plugin-rmodel.git"
+  },
+  "private": false,
+  "author": "'xianyongwen' <'xianyongwen@163.com'>",
+  "license": "MIT"
+}
