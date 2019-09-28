@@ -2,8 +2,8 @@
 
 >  
 > 
-## 设计动机
-&nbsp;&nbsp;&nbsp;&nbsp;本人在后台管理项目中使用vue比较多，私以为v-model是一个很好的语法糖，可以有效地减少了编写表单控件的输入处理的代码。后台管理详情页面中常用到大量的输入控件，比如商品详情页面，往往包含几十个字段的展示与编辑。react并没有在架构代码中提供类似与vue中v-model的功能，要实现相同的功能就要手动编写大量的onChange处理方法。前端的发展历程，往往很多时候是为了优雅地减少前端工程师的工作量。为了在react中能使用类似与vue的v-model这种双向绑定的语法糖，我特意写了这个babel插件，在编译的过程中自动的对代码进行转换。   
+## 设计动机：react需要一个rModel
+&nbsp;&nbsp;&nbsp;&nbsp;本人在后台管理项目中使用vue比较多，私以为v-model是一个很好的语法糖，可以有效地减少了编写表单控件的输入处理的代码。后台管理系统详情页面中常用到大量的输入控件，比如商品详情页面，往往包含几十个字段的展示与编辑。react并没有在架构代码中提供类似于vue中v-model的功能，要实现相同的功能就要手动编写大量的onChange处理方法。前端的发展历程，往往很多时候是为了优雅地减少前端工程师的工作量。为了在react中能使用类似于vue的v-model这种双向绑定的语法糖，我特意写了这个babel插件，在编译的过程中自动的对代码进行转换。   
 
 &emsp;
 ## example:
@@ -26,7 +26,7 @@ class App extends React.Component {
   } 
 }
 ```
-### 相当于如下代码
+### 转换后相当于如下代码
 ```javascript
 class App extends React.Component {
   constructor () {
@@ -58,12 +58,12 @@ class App extends React.Component {
 &emsp;
 ## NPM 安装
 ```bash
-npm i --save-D babel-rmodel-plugin
+npm i --save-D babel-plugin-rmodel
 ```
 &emsp;
 
 ## 如何使用
-### 请参考babel的preset的使用方法与插件的使用方法
+### 请参考babel的preset与插件的使用方法
 ### preset: https://babeljs.io/docs/en/presets
 ### plugin: https://babeljs.io/docs/en/plugins
 
