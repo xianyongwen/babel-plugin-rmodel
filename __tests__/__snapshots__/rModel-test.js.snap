@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rModel 1`] = `
+"
+React.createElement(\\"input\\", {
+  value: this.state.counter,
+  onChange: e => {
+    let temp = e.target.value;
+    this.setState(state => ({
+      counter: temp
+    }));
+  }
+});"
+`;

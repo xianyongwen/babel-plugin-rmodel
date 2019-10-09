@@ -87,7 +87,7 @@ class App extends React.Component {
 &emsp;
 ## NPM 安装
 ```bash
-npm i --save-D babel-plugin-rmodel
+npm install --save-dev babel-plugin-rmodel
 ```
 &emsp;
 

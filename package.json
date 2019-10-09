@@ -4,7 +4,7 @@
   "description": "a babel plugin of achieving bidirectional bindings of react state",
   "main": "src/index.js",
   "scripts": {
-    
+    "test": "jest"
   },
   "keywords": [
     "react",
@@ -16,5 +16,9 @@
   },
   "private": false,
   "author": "'xianyongwen' <'xianyongwen@163.com'>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "jest": "^24.9.0"
+  }
 }
