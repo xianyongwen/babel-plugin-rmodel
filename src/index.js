@@ -26,8 +26,57 @@ module.exports = function (babel) {
 
               //获得rModel的绑定属性名rModelValue
               let rModelValue = null;
-              if(rModel.node.value&&rModel.node.value.property){
-                rModelValue = rModel.node.value.property.name;
+              let rModelHandle = null;
+              let changeStateCode = [];
+              if(rModel.node.value){
+                // rModel=[inputVal, changeInputVal]
+                if(t.isArrayExpression(rModel.node.value)) {
+                  if(rModel.node.value.elements && rModel.node.value.elements.length === 2) {
+                    rModelValue = rModel.node.value.elements[0].name;
+                    rModelHandle = rModel.node.value.elements[1].name;
+                    console.log('babelPengin:', rModelValue, rModelHandle);
+                    rModel.node.value = t.identifier(rModelValue);
+                    //  生成改变state的代码
+                    //   changeInputVal(e.target.value)
+                    changeStateCode = [
+                      t.expressionStatement(
+                        t.callExpression(
+                          t.identifier(rModelHandle), 
+                          [t.memberExpression(t.memberExpression(t.identifier('e'), t.identifier('target')),t.identifier('value'))]
+                        )
+                      )
+                    ]
+                  }
+                } else if(rModel.node.value.property) {
+                  rModelValue = rModel.node.value.property.name;
+                  //  生成改变state的代码
+                  //   let val = e.target.value;
+                  //   this.setState((state)=>({rModelValue:val}))
+                  changeStateCode = [
+                    //let val = e.target.value;
+                    t.variableDeclaration('let', [t.variableDeclarator(
+                      t.identifier('temp'),
+                      t.memberExpression(t.memberExpression(t.identifier('e'), t.identifier('target')),t.identifier('value'))
+                    )]),
+                    //this.setState((state=>({rModelValue:val})))
+                    t.expressionStatement(
+                      t.callExpression(
+                        t.memberExpression(
+                          t.identifier('this'), t.identifier('setState')
+                        ), 
+                        [t.arrowFunctionExpression(
+                          [t.identifier('state')],
+                          t.ObjectExpression(
+                            [t.objectProperty(
+                              t.identifier(rModelValue),
+                              t.identifier('temp')
+                            )]
+                          )
+                        )]
+                      )
+                    )
+                  ];
+                }
               }
               if(!rModelValue){
                 console.error('rModel property error!')
@@ -38,34 +87,6 @@ module.exports = function (babel) {
               let onChangeProperty = props.find(item=>{
                 return item.node&&t.isIdentifier(item.node.key)&&item.node.key.name === "onChange";
               })
-
-              //生成改变state的代码
-              //   let val = e.target.value;
-              //   this.setState((state)=>({rModelValue:val}))
-              let changeStateCode = [
-                //let val = e.target.value;
-                t.variableDeclaration('let', [t.variableDeclarator(
-                  t.identifier('temp'),
-                  t.memberExpression(t.memberExpression(t.identifier('e'), t.identifier('target')),t.identifier('value'))
-                )]),
-                //this.setState((state=>({rModelValue:val})))
-                t.expressionStatement(
-                  t.callExpression(
-                    t.memberExpression(
-                      t.identifier('this'), t.identifier('setState')
-                    ), 
-                    [t.arrowFunctionExpression(
-                      [t.identifier('state')],
-                      t.ObjectExpression(
-                        [t.objectProperty(
-                          t.identifier(rModelValue),
-                          t.identifier('temp')
-                        )]
-                      )
-                    )]
-                  )
-                )
-              ];
 
               //已经存在onChange，合并，
               //把原onChange的处理函数放在生成的onChange里调用，
@@ -89,8 +110,6 @@ module.exports = function (babel) {
               } else { 
                 // 不存在onChange，生成一个
                 // onChange: (e)=>{
-                //   let val = e.target.value;
-                //   this.setState((state)=>({rModelValue:val}))
                 // }
                 rModel.insertAfter(
                   t.objectProperty(

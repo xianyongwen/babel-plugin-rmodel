@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-rmodel",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "a babel plugin of achieving bidirectional bindings of react state",
   "main": "src/index.js",
   "scripts": {

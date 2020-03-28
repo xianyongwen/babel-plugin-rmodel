@@ -84,6 +84,40 @@ class App extends React.Component {
 />
 ```
 
+#### 对react useState Hook的支持
+```javascript
+function App () {
+  const [inputVal, changeInputVal] = useState(0);
+  return (
+    <div className="App">
+      <p>{inputVal}</p>
+      <input
+        rModel={[inputVal, changeInputVal]}
+        onChange={e => console.log('onChangeHandle')} />
+    </div>
+  );
+}
+```
+#### 相当于
+```javascript
+function App () {
+  const [inputVal, changeInputVal] = useState(0);
+  return (
+    <div className="App">
+      <p>{inputVal}</p>
+      <input 
+        value={inputVal}
+        onChange={
+          e => {
+            console.log('onChangeHandle')
+            changeInputVal(e.target.value)
+          }
+        } />
+    </div>
+  );
+}
+```
+
 &emsp;
 ## NPM 安装
 ```bash
